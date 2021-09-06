@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ant-design-vue/1.7.8/antd.min.css"
+        integrity="sha512-jWSyUVZdQTCPRAe9N3sp9kxGCkhKr5a0FjMse3WASy6SP2Hbez2wH2IhOdpN231YFzeVhz93JdSrts2772N4NQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script crossorigin="anonymous"
+        integrity="sha512-XdUZ5nrNkVySQBnnM5vzDqHai823Spoq1W3pJoQwomQja+o4Nw0Ew1ppxo5bhF2vMug6sfibhKWcNJsG8Vj9tg=="
+        src="http://lib.baomitu.com/vue/2.6.14/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ant-design-vue/1.7.8/antd.min.js"
+        integrity="sha512-o1PLXMVDD8r7lQlPXWHTyJxH7WpFm75dsSfzsa04HRgbeEHJv/EbaxEgACaB6mxbBmHU+Dl64MflqQB7cKAYpA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        html,
+        body,
+        #app {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .tree {
+            margin-left: 20px;
+            width: 150px;
+             
+             
+            border-radius: 10px;
+            padding-top: 10px;
+        }
+
+        .tree .tree-header {
+            display: flex;
+        }
+
+        .tree-header:hover {
+            background: #eee;
+        }
+
+        .shrink-icon {
+            cursor: pointer;
+        }
+
+        .table-list {
+            margin-left: 33px;
+            margin-top: 5px;
+            transition: height 2s;
+        }
+
+        .table {
+            height: 30px;
+            line-height: 30px;
+            cursor: pointer;
+            border-radius: 6px;
+            padding-left: 10px;
+
+        }
+
+        .highlight {
+            background: #04a669 !important;
+            color: #fff;
+        }
+
+        .table:hover {
+            background: #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <a-card>
+            <a-button slot="extra" @click="handleAddDataClick">
+                Add Data
+            </a-button>
+            <a-row>
+                <a-col :span="3">
+                    <div class="tree">
+                        <div class="tree-header">
+                            <div class="shrink-icon">
+                                <a-icon v-show="unfold" @click="handleShrik(false)" type="minus-circle" />
+                                <a-icon v-show="!unfold" @click="handleShrik(true)" type="plus-square" />
+                            </div>
+                            <div class="data-base-name">
+                                <span>~~</span>
+                                
+                                <span> 9UYHD3JWGK</span>
+                            </div>
+                        </div>
+                        <div class="table-list" v-show="unfold">
+                            <div class="table" :class="currentTable == 'user' ? 'highlight table' : 'table'"
+                                @click="handleTableClick('user')">
+                                
+                                <span>-user</span>
+                            </div>
+
+                            <div class="table" :class="currentTable == 'student' ? 'highlight table' : 'table'"
+                                @click="handleTableClick('student')">
+                                
+                                <span>-student</span>
+                            </div>
+                        </div>
+                    </div>
+                </a-col>
+                <a-col :span="21">
+                    <a-table :pagination="false" :columns="columns" :data-source="data">
+                        <a slot="name" slot-scope="text">{{ text }}</a>
+                        <span slot="customTitle">
+                            <a-icon type="smile-o" /> Name</span>
+                        <span slot="tags" slot-scope="tags">
+                            <a-tag v-for="tag in tags" :key="tag"
+                                :color="tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'">
+                                {{ tag.toUpperCase() }}
+                            </a-tag>
+                        </span>
+                        <span slot="action" slot-scope="text, record">
+                            <a>Invite 一 {{ record.name }}</a>
+                        </span>
+                    </a-table>
+                </a-col>
+            </a-row>
+        </a-card>
+        <a-modal title="添加数据" :visible="visible" @ok="() => handleBtnClick('ok')" cancelText="取消" okText="提交数据"
+            :closable="false" width="800px" @cancel="() => handleBtnClick('cancel')">
+            <a-table :columns="modalColumns" :row-key="(item) => item.id" :data-source="[]" :pagination="false">
+                
+            </a-table>
+        </a-modal>
+    </div>
+
+</body>
+
+<script>
+    const columns = [{
+            dataIndex: 'ID',
+            key: 'ID',
+            title: "ID"
+        },
+        {
+            title: 'created_by',
+            dataIndex: 'created_by',
+            key: 'created_by',
+        },
+        {
+            title: 'created_at',
+            dataIndex: 'created_at',
+            key: 'created_at',
+        },
+        {
+            title: 'name',
+            key: 'name',
+            dataIndex: 'name',
+        },
+        {
+            title: 'age',
+            key: 'age',
+            dataIndex: 'name',
+        },
+    ];
+    const data = [{
+            ID: '1',
+            created_by: 'cosmos1gs87qsgz3pftzmx2pxfr3hztcuht9',
+            created_at: '2021-08-27 04:39:29',
+            name: 'Mr.long',
+            age: 20,
+        },
+        {
+            ID: '1',
+            created_by: 'cosmos1gs87qsgz3pftzmx2pxfr3hztcuht9',
+            created_at: '2021-08-27 04:39:29',
+            name: 'Mr.long',
+            age: 20,
+        }, {
+            ID: '1',
+            created_by: 'cosmos1gs87qsgz3pftzmx2pxfr3hztcuht9',
+            created_at: '2021-08-27 04:39:29',
+            name: 'Mr.long',
+            age: 20,
+        }, {
+            ID: '1',
+            created_by: 'cosmos1gs87qsgz3pftzmx2pxfr3hztcuht9',
+            created_at: '2021-08-27 04:39:29',
+            name: 'Mr.long',
+            age: 20,
+        },
+    ];
+    const modalColumns = [{
+            dataIndex: "id",
+            key: "id",
+            title: "#",
+        },
+        {
+            dataIndex: "fild",
+            key: "fild",
+            title: "字段",
+        },
+        {
+            title: "属性",
+            dataIndex: "attribute",
+            key: "attribute",
+        },
+        {
+            title: "类型",
+            dataIndex: "type",
+            key: "type",
+        },
+        {
+            title: "Action",
+            key: "action",
+            scopedSlots: {
+                customRender: "action"
+            },
+        },
+    ];
+
+    let vue = new Vue({
+        el: "#app",
+        data: {
+            unfold: true,
+            currentTable: 'user',
+            data,
+            columns,
+            visible: false,
+        },
+        methods: {
+            handleShrik(bol) {
+                this.unfold = bol;
+            },
+            handleTableClick(table) {
+                this.currentTable = table;
+            },
+            handleAddDataClick() {
+                this.visible = true;
+            },
+            handleBtnClick() {
+                this.visible = false;
+            }
+        },
+        computed: {}
+    })
+    
+    console.log(antd);
+</script>
+
+</html>

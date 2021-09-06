@@ -1,4 +1,4 @@
-package Zip
+package toZip
 
 import (
 	"archive/zip"
@@ -70,7 +70,7 @@ func compress(file *os.File, prefix string, zw *zip.Writer) error {
 }
 
 //func main() {
-//	err := ToZip("pages", "./1.zip")
+//	err := ToZip("FrontEndCode", "./1.zip")
 //	if err != nil {
 //		fmt.Println(err)
 //	}

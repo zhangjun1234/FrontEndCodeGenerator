@@ -33,49 +33,6 @@
     </div>
   </div>
 </template>
-
-<!-- <template>
-  <div class="tree">
-    <div class="tree-header">
-      <div class="shrink-icon">
-        <a-icon
-          v-show="unfold"
-          @click="handleShrik(false)"
-          type="minus-circle"
-        />
-        <a-icon
-          v-show="!unfold"
-          @click="handleShrik(true)"
-          type="plus-square"
-        />
-      </div>
-      <div class="data-base-name">
-        <span>~~</span>
-        <a-icon type="database" />
-        <span> 9UYHD3JWGK</span>
-      </div>
-    </div>
-    <div class="table-list" v-show="unfold">
-      <div
-        class="table"
-        :class="currentTable == 'user' ? 'highlight table' : 'table'"
-        @click="handleTableClick('user')"
-      >
-        <a-icon type="table" />
-        <span>-user</span>
-      </div>
-
-      <div
-        class="table"
-        :class="currentTable == 'student' ? 'highlight table' : 'table'"
-        @click="handleTableClick('student')"
-      >
-        <a-icon type="table" />
-        <span>-student</span>
-      </div>
-    </div>
-  </div>
-</template> -->
 <script>
 export default {
   data() {
@@ -120,13 +77,7 @@ export default {
   margin-top: 5px;
   transition: height 2s;
 }
-/* .table-list div {
-  height: 30px;
-  line-height: 30px;
-  cursor: pointer;
-  border-radius: 6px;
-  padding-left: 10px;
-} */
+
 .table {
   height: 30px;
   line-height: 30px;
@@ -134,10 +85,7 @@ export default {
   border-radius: 6px;
   padding-left: 10px;
 }
-/* .table-list .table:nth-child(1) {
-  background: #04a669;
-  color: #fff;
-} */
+
 .highlight {
   background: #04a669 !important;
   color: #fff;
@@ -180,5 +128,50 @@ export default {
     </div>
   </div>
 </template> */
+  /* 插入后 */
+  /**
+<template>
+  <div class="tree">
+    <div class="tree-header">
+      <div class="shrink-icon">
+        <a-icon
+          v-show="unfold"
+          @click="handleShrik(false)"
+          type="minus-circle"
+        />
+        <a-icon
+          v-show="!unfold"
+          @click="handleShrik(true)"
+          type="plus-square"
+        />
+      </div>
+      <div class="data-base-name">
+        <span>~~</span>
+        <a-icon type="database" />
+        <span> 9UYHD3JWGK</span>
+      </div>
+    </div>
+    <div class="table-list" v-show="unfold">
+      <div
+        class="table"
+        :class="currentTable == 'user' ? 'highlight table' : 'table'"
+        @click="handleTableClick('user')"
+      >
+        <a-icon type="table" />
+        <span>-user</span>
+      </div>
+
+      <div
+        class="table"
+        :class="currentTable == 'student' ? 'highlight table' : 'table'"
+        @click="handleTableClick('student')"
+      >
+        <a-icon type="table" />
+        <span>-student</span>
+      </div>
+    </div>
+  </div>
+</template>
+*/
 }
 </style>

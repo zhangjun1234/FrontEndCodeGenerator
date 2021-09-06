@@ -1,4 +1,4 @@
-package CopyDirectory
+package copyDirectory
 
 import (
 	"fmt"
@@ -75,7 +75,7 @@ func Dir(src string, dst string) error {
 }
 
 func main() {
-	err := Dir("templates", "pages")
+	err := Dir("templates", "FrontEndCode")
 	if err != nil {
 		fmt.Println(err)
 		return

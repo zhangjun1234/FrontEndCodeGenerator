@@ -1,4 +1,4 @@
-package DBChain
+package dbchain
 
 import (
 	"encoding/json"
