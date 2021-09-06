@@ -6,19 +6,14 @@ import (
 	"net/http"
 )
 
-const (
-	databaseName = "HJM9XONGDY"
-	baseUrl      = "https://controlpanel.dbchain.cloud/relay/dbchain/"
-)
 
-func QueryTables(token string, databaseCode string) []string {
-	QueryDataUrl := baseUrl + "/tables/" + token + "/" + databaseCode
+func QueryTables(token string, baseUrl string,databaseCode string) []string {
+	QueryDataUrl := baseUrl+"/dbchain" + "/tables/" + token + "/" + databaseCode
 	resp := Get(QueryDataUrl)
 	tmpMap := JSONToMap(resp)
 	resultsInterfaces := tmpMap["result"].([]interface{})
 	var tablesSlice []string
 	for _, v := range resultsInterfaces {
-		//fmt.Println("value :",v)
 		tablesSlice = append(tablesSlice, v.(string))
 	}
 	return tablesSlice
@@ -46,8 +41,8 @@ func Get(url string) string {
 	return string(body)
 }
 
-func QueryTableColOpts(token string, databaseCode string, tableName string, field string) []string {
-	QueryColOptsUrl := baseUrl + "/column-options/" + token + "/" + databaseCode + "/" + tableName + "/" + field
+func QueryTableColOpts(token string, baseUrl string,databaseCode string, tableName string, field string) []string {
+	QueryColOptsUrl := baseUrl +"/dbchain"+ "/column-options/" + token + "/" + databaseCode + "/" + tableName + "/" + field
 	resp := Get(QueryColOptsUrl)
 	tmpMap := JSONToMap(resp)
 	tmpinterfaces := tmpMap["result"].([]interface{})
@@ -58,15 +53,15 @@ func QueryTableColOpts(token string, databaseCode string, tableName string, fiel
 	return colOptsArray
 }
 
-func QueryTableColDataType(token string, databaseCode string, tableName string, field string) string {
-	QueryColOptsUrl := baseUrl + "/column-data-type/" + token + "/" + databaseCode + "/" + tableName + "/" + field
+func QueryTableColDataType(token string, baseUrl string,databaseCode string, tableName string, field string) string {
+	QueryColOptsUrl := baseUrl +"/dbchain"+ "/column-data-type/" + token + "/" + databaseCode + "/" + tableName + "/" + field
 	resp := Get(QueryColOptsUrl)
 	tmpMap := JSONToMap(resp)
 	return tmpMap["result"].(string)
 }
 
-func QueryTableFields(token string, databaseCode string, tableName string) []string {
-	QueryDataUrl := baseUrl + "/tables/" + token + "/" + databaseCode + "/" + tableName
+func QueryTableFields(token string, baseUrl string,databaseCode string, tableName string) []string {
+	QueryDataUrl := baseUrl +"/dbchain"+ "/tables/" + token + "/" + databaseCode + "/" + tableName
 	resp := Get(QueryDataUrl)
 	return ExtractFieldsSlice(resp)
 }
@@ -83,56 +78,54 @@ func ExtractFieldsSlice(resp string) []string {
 	return fieldSlices
 }
 
-func GetFinalJson(databaseCode string) string {
+//func GetFinalJson(baseUrl string,databaseCode string) string {
+//	token := MakeAccessCode()
+//	tablesName := QueryTables(token, baseUrl,databaseCode)
+//	bigMap := make(map[string]interface{})
+//	var tablesMap []map[string]interface{}
+//	bigMap["appCode"] = databaseCode
+//	for _, tableName := range tablesName {
+//		tableMap := make(map[string]interface{})
+//		fields := QueryTableFields(token,baseUrl,databaseCode, tableName)
+//		var fieldMap []map[string]interface{}
+//		for _, field := range fields {
+//			colMap := make(map[string]interface{})
+//			colMap["name"] = field
+//			colopts := QueryTableColOpts(token,baseUrl,databaseCode, tableName, field)
+//			dataType := QueryTableColDataType(token,baseUrl,databaseCode, tableName, field)
+//			if len(colopts) > 0 {
+//				colMap["propertyArr"] = colopts
+//			}
+//			if len(dataType) > 0 {
+//				colMap["fieldType"] = dataType
+//			}
+//			fieldMap = append(fieldMap, colMap)
+//		}
+//		tableMap["name"] = tableName
+//		tableMap["field"] = fieldMap
+//
+//		tablesMap = append(tablesMap, tableMap)
+//	}
+//	bigMap["table"] = tablesMap
+//	return MapToJson(bigMap)
+//}
+
+
+func GetFinalMap(baseUrl string,databaseCode string) map[string]interface{} {
 	token := MakeAccessCode()
-	tablesName := QueryTables(token, databaseCode)
+	tablesName := QueryTables(token, baseUrl,databaseCode)
 	bigMap := make(map[string]interface{})
 	var tablesMap []map[string]interface{}
 	bigMap["appCode"] = databaseCode
 	for _, tableName := range tablesName {
 		tableMap := make(map[string]interface{})
-		fields := QueryTableFields(token, databaseCode, tableName)
-		//tableMap := make(map[string]interface{})
-		var fieldMap []map[string]interface{}
-
-		for _, field := range fields {
-			colMap := make(map[string]interface{})
-			colMap["name"] = field
-			colopts := QueryTableColOpts(token, databaseCode, tableName, field)
-			dataType := QueryTableColDataType(token, databaseCode, tableName, field)
-			if len(colopts) > 0 {
-				colMap["propertyArr"] = colopts
-			}
-			if len(dataType) > 0 {
-				colMap["fieldType"] = dataType
-			}
-			fieldMap = append(fieldMap, colMap)
-		}
-		tableMap["name"] = tableName
-		tableMap["field"] = fieldMap
-
-		tablesMap = append(tablesMap, tableMap)
-	}
-	bigMap["table"] = tablesMap
-	return MapToJson(bigMap)
-}
-
-func GetFinalMap(databaseCode string) map[string]interface{} {
-	token := MakeAccessCode()
-	tablesName := QueryTables(token, databaseCode)
-	bigMap := make(map[string]interface{})
-	var tablesMap []map[string]interface{}
-	bigMap["appCode"] = databaseCode
-	for _, tableName := range tablesName {
-		tableMap := make(map[string]interface{})
-		fields := QueryTableFields(token, databaseCode, tableName)
-		//tableMap := make(map[string]interface{})
+		fields := QueryTableFields(token, baseUrl ,databaseCode, tableName)
 		var fieldMap []map[string]interface{}
 		for _, field := range fields {
 			colMap := make(map[string]interface{})
 			colMap["name"] = field
-			colopts := QueryTableColOpts(token, databaseCode, tableName, field)
-			dataType := QueryTableColDataType(token, databaseCode, tableName, field)
+			colopts := QueryTableColOpts(token,baseUrl,databaseCode,tableName, field)
+			dataType := QueryTableColDataType(token,baseUrl, databaseCode, tableName, field)
 			if len(colopts) > 0 {
 				colMap["propertyArr"] = colopts
 			}
@@ -150,10 +143,10 @@ func GetFinalMap(databaseCode string) map[string]interface{} {
 	return bigMap
 }
 
-func MapToJson(myMap map[string]interface{}) string {
-	bytes, err := json.Marshal(myMap)
-	if err != nil {
-		panic(err)
-	}
-	return string(bytes)
-}
+//func MapToJson(myMap map[string]interface{}) string {
+//	bytes, err := json.Marshal(myMap)
+//	if err != nil {
+//		panic(err)
+//	}
+//	return string(bytes)
+//}

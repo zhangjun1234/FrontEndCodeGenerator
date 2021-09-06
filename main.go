@@ -13,9 +13,6 @@ import (
 	"strings"
 )
 
-var dataBaseName string
-
-
 func GetAllFile(pathname string, s []string) ([]string, error) {
 	rd, err := ioutil.ReadDir(pathname)
 	if err != nil {
@@ -38,35 +35,55 @@ func GetAllFile(pathname string, s []string) ([]string, error) {
 	return s, nil
 }
 
-func ToDownload(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles("ToDownload.html"))
-	t.Execute(w, nil)
-}
-
 func GenerateCode(w http.ResponseWriter, r *http.Request) {
-	//copy templates to pages
-	CopyDirectory.Dir("templates", "pages")
-	//get data from dbchain
-	dataMap := DBChain.GetFinalMap(dataBaseName)
-	//inject data to templates
-	var s []string
-	s, _ = GetAllFile("templates", s)
-	for _, filename := range s {
-		t := template.Must(template.New(GetTrimPrefixFileName(filename)).Delims("{[", "]}").ParseFiles(filename))
-		os.RemoveAll("pages/" + filename)
-		trimPrefixPath := strings.TrimPrefix(filename, "templates/")
-		file, err := os.OpenFile("pages/"+trimPrefixPath, os.O_WRONLY|os.O_CREATE, 0600)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		t.Execute(file, dataMap)
+	//get params
+	appCode :=r.FormValue("appCode")
+	templateFlag :=r.FormValue("templateFlag")
+	baseUrl :=r.FormValue("baseUrl")
+	//basic Verify
+	if len(appCode)==0|| len(templateFlag)==0|| len(baseUrl)==0 {
+		fmt.Fprintf(w,"params error")
+		return
 	}
-	//compress to zip
-	Zip.ToZip("pages", "./code.zip")
-	//redirect
-	w.Header().Set("location", "http://192.168.0.199:8080/ToDownload")
-	w.WriteHeader(302)
+	//get dataMap from dbchain
+	dataMap := DBChain.GetFinalMap(baseUrl, appCode)
+	//remove previous data
+	os.RemoveAll("FrontEndCode")
+	switch templateFlag {
+	case "1":
+		CopyDirectory.Dir("templateTest/template1", "FrontEndCode")
+		//inject data to templates
+		var s []string
+		s, _ = GetAllFile("FrontEndCode", s)
+		for _, filename := range s {
+			t := template.Must(template.New(GetTrimPrefixFileName(filename)).Delims("{[", "]}").ParseFiles(filename))
+			file, err := os.OpenFile(filename, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0600)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			t.Execute(file, dataMap)
+		}
+	default:
+		fmt.Fprintln(w, "no such template")
+		return
+	}
+	//compress
+	Zip.ToZip("FrontEndCode", "./code.zip")
+	//download
+	fileName := "code.zip"
+	file, err := os.Open(fileName)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	w.Header().Add("Content-Type", "application/octet-stream")
+	w.Header().Add("content-disposition", "attachment; filename=\""+fileName+"\"")
+	_, err = io.Copy(w, file)
+	if err != nil {
+		w.Write([]byte(err.Error()))
+		return
+	}
 }
 
 func GetTrimPrefixFileName(path string)string{
@@ -74,36 +91,8 @@ func GetTrimPrefixFileName(path string)string{
 	return  path[lastIndex+1:]
 }
 
-func Download(res http.ResponseWriter, r *http.Request) {
-	fileName := "code.zip"
-	file, err := os.Open(fileName)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	res.Header().Add("Content-Type", "application/octet-stream")
-	res.Header().Add("content-disposition", "attachment; filename=\""+fileName+"\"")
-	_, err = io.Copy(res, file)
-	if err != nil {
-		res.Write([]byte(err.Error()))
-		return
-	}
-}
-
-
-
-func GetDatabaseName(res http.ResponseWriter, req *http.Request) {
-	receiveParam := req.URL.RawQuery
-	fmt.Println(receiveParam)
-	dataBaseName = receiveParam
-}
-
 func main() {
-	http.HandleFunc("/ToDownload", ToDownload)
-	http.HandleFunc("/Download", Download)
-	http.HandleFunc("/transDatabaseName", GetDatabaseName)
 	http.HandleFunc("/GenerateCode", GenerateCode)
 	http.ListenAndServe(":8080", nil)
-
 }
 
