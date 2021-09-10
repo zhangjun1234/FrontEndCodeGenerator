@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="renderer" content="webkit" />
+  <!-- 源地址设置 -->
+  <meta name="referrer" content="no-referrer" />
+  <!-- 同源 -->
+  <!-- <meta http-equiv="Access-Control-Allow-Origin" content="*" /> -->
+  <meta name="screen-orientation" content="portrait" />
+  <meta name="full-screen" content="yes" />
+  <meta name="browsermode" content="application" />
+  <meta name="x5-orientation" content="portrait" />
+  <meta name="x5-fullscreen" content="true" />
+  <meta name="x5-page-mode" content="app" />
+  <meta name="keywords" content="深圳库链科技有限公司,区块链,库链,云存储,库链科技,区块链科技有限公司,DBchain,sql,chain,dbchain/oracle/blockchain">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <title>DBChain Control Panel</title>
+  
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+      Please enable it to continue.</strong>
+  </noscript>
+  <div id="app"></div>
+  
+  <!-- built files will be auto injected -->
+
+  <!-- 使用CDN加速的JS文件，配置在vue.config.js下 -->
+  <!-- <script src="https://dazhonghua-xiaoyao.oss-cn-guangzhou.aliyuncs.com/dbchain_web/iconfont.js"></script>
+  
+  <script src="https://dazhonghua-xiaoyao.oss-cn-guangzhou.aliyuncs.com/dbchain_web/dbchan_web_modules/vendor.dll.js"></script> -->
+
+  <script src="//at.alicdn.com/t/font_2107764_cuzf14fz8ml.js"></script>
+  
+  <!-- <script src="./vendor/vendor.dll.js"></script> -->
+  <!-- cdn -->
+  <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
+    <script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
+    <% } %>
+<!-- 动画 -->
+<script src="https://oss.dbchain.cloud/dbchain_web/animate.js"></script>
+<!-- <script src="https://dazhonghua-xiaoyao.oss-cn-guangzhou.aliyuncs.com/dbchain_web/animate.js"></script> -->
+</body>
+
+</html>

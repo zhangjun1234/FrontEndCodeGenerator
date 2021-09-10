@@ -78,21 +78,21 @@ func ExtractFieldsSlice(resp string) []string {
 	return fieldSlices
 }
 
-//func GetFinalJson(baseUrl string,databaseCode string) string {
+//func GetFinalJson(baseUrl.txt string,databaseCode string) string {
 //	token := MakeAccessCode()
-//	tablesName := QueryTables(token, baseUrl,databaseCode)
+//	tablesName := QueryTables(token, baseUrl.txt,databaseCode)
 //	bigMap := make(map[string]interface{})
 //	var tablesMap []map[string]interface{}
 //	bigMap["appCode"] = databaseCode
 //	for _, tableName := range tablesName {
 //		tableMap := make(map[string]interface{})
-//		fields := QueryTableFields(token,baseUrl,databaseCode, tableName)
+//		fields := QueryTableFields(token,baseUrl.txt,databaseCode, tableName)
 //		var fieldMap []map[string]interface{}
 //		for _, field := range fields {
 //			colMap := make(map[string]interface{})
 //			colMap["name"] = field
-//			colopts := QueryTableColOpts(token,baseUrl,databaseCode, tableName, field)
-//			dataType := QueryTableColDataType(token,baseUrl,databaseCode, tableName, field)
+//			colopts := QueryTableColOpts(token,baseUrl.txt,databaseCode, tableName, field)
+//			dataType := QueryTableColDataType(token,baseUrl.txt,databaseCode, tableName, field)
 //			if len(colopts) > 0 {
 //				colMap["propertyArr"] = colopts
 //			}
@@ -109,6 +109,38 @@ func ExtractFieldsSlice(resp string) []string {
 //	bigMap["table"] = tablesMap
 //	return MapToJson(bigMap)
 //}
+
+func GetFinalMapData(baseUrl string,accessToken string,databaseCode string) map[string]interface{} {
+	token := accessToken
+	tablesName := QueryTables(token, baseUrl,databaseCode)
+	bigMap := make(map[string]interface{})
+	var tablesMap []map[string]interface{}
+	bigMap["appCode"] = databaseCode
+	for _, tableName := range tablesName {
+		tableMap := make(map[string]interface{})
+		fields := QueryTableFields(token, baseUrl ,databaseCode, tableName)
+		var fieldMap []map[string]interface{}
+		for _, field := range fields {
+			colMap := make(map[string]interface{})
+			colMap["name"] = field
+			colopts := QueryTableColOpts(token,baseUrl,databaseCode,tableName, field)
+			dataType := QueryTableColDataType(token,baseUrl, databaseCode, tableName, field)
+			if len(colopts) > 0 {
+				colMap["propertyArr"] = colopts
+			}
+			if len(dataType) > 0 {
+				colMap["fieldType"] = dataType
+			}
+			fieldMap = append(fieldMap, colMap)
+		}
+		tableMap["name"] = tableName
+		tableMap["field"] = fieldMap
+
+		tablesMap = append(tablesMap, tableMap)
+	}
+	bigMap["table"] = tablesMap
+	return bigMap
+}
 
 
 func GetFinalMap(baseUrl string,databaseCode string) map[string]interface{} {

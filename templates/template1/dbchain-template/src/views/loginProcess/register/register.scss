@@ -1,0 +1,204 @@
+._register {
+  ._tit {
+    // padding: 16px 0 30px 0;
+    padding: 6px 0 22px 0;
+    position: relative;
+    ._p {
+      font-size: 26px;
+      font-family: SourceHanSansCN-Regular, SourceHanSansCN;
+      font-weight: 400;
+      color: #000000;
+    }
+    ._check {
+      position: absolute;
+      right: 10px;
+      right: 14px;
+      top: 26px;
+      ._refresh {
+        font-size: 18px;
+        margin-left: 18px;
+        cursor: pointer;
+      }
+      ._icon {
+        font-size: 18px;
+        cursor: pointer;
+      }
+    }
+  }
+  ._title {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 19px;
+    ._refresh {
+      color: #3f3f3f;
+      cursor: pointer;
+    }
+  }
+  ._header {
+    text-align: left;
+    margin-bottom: 19px;
+    ._text {
+      font-size: 18px;
+      font-family: SourceHanSansCN-Normal, SourceHanSansCN;
+      font-weight: 400;
+      color: #888888;
+      line-height: 27px;
+      cursor: pointer;
+      margin-right: 28px;
+    }
+    .active_text {
+      font-size: 20px;
+      font-weight: 500;
+      color: #000000;
+      line-height: 30px;
+    }
+  }
+  ._content {
+    text-align: left;
+    ._block {
+      display: inline-block;
+      height: 46px;
+      width: 24.4%;
+      background: $active-color;
+      font-size: 18px;
+      font-family: SourceHanSansCN-Normal, SourceHanSansCN;
+      font-weight: 400;
+      color: #ffffff;
+      line-height: 46px;
+      margin: 0px 4px 0 0;
+      text-align: center;
+      &:nth-child(4),
+      &:nth-child(8),
+      &:nth-child(12) {
+        margin-right: 0;
+      }
+      &:first-child {
+        border-top-left-radius: 8px;
+        -webkit-border-top-left-radius: 8px;
+      }
+      &:last-child {
+        border-bottom-right-radius: 8px;
+        -webkit-border-bottom-right-radius: 8px;
+      }
+      &:nth-child(4) {
+        border-top-right-radius: 8px;
+        -webkit-top-bottom-right-radius: 8px;
+      }
+      &:nth-child(9) {
+        border-bottom-left-radius: 8px;
+        -webkit-border-bottom-left-radius: 8px;
+      }
+      position: relative;
+      ._absolute {
+        position: absolute;
+        left: 15px;
+        font-size: 14px;
+      }
+      ._text {
+        width: 100%;
+        display: inline-block;
+        position: absolute;
+        left: 0;
+        font-size: 18px;
+      }
+    }
+    ._icon {
+      position: absolute;
+      bottom: 16px;
+      cursor: pointer;
+      right: 14px;
+    }
+  }
+  ._form {
+    display: flex;
+    flex-wrap: wrap;
+    ._flex {
+      padding-top: 30px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      ._icon {
+        margin-right: 10px;
+        .svg-icon {
+          font-size: 26px;
+        }
+      }
+      border-bottom: 2px solid #979797;
+      ._absolute {
+        height: 16px;
+        font-size: 12px;
+        font-family: SourceHanSansCN-Light, SourceHanSansCN;
+        font-weight: 300;
+        color: #cbcbcb;
+        bottom: 10px;
+        right: 34px;
+        position: absolute;
+      }
+      &:nth-child(2) {
+        ._absolute {
+          // right: 28px;
+        }
+      }
+      &:first-child {
+        width: 100%;
+        margin-right: 0;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+  ._desc {
+    padding: 18px 0 18px 0;
+    ._title {
+      margin: 0;
+      font-size: 15px;
+
+      font-family: SourceHanSansCN-Bold, SourceHanSansCN;
+      font-weight: bold;
+      color: #000000;
+      line-height: 23px;
+      &:last-child {
+        margin-top: 44px;
+      }
+    }
+    ._text {
+      font-size: 15px;
+      font-family: SourceHanSansCN-Regular, SourceHanSansCN;
+      font-weight: 400;
+      color: #000000;
+      line-height: 28px;
+      text-align: left;
+      display: inline-block;
+      width: 100%;
+    }
+  }
+  ._footer {
+    ._login_btn {
+      width: 100%;
+      height: 48px;
+      background: $active_color;
+      border-radius: 6px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      margin-top: 0px;
+      cursor: pointer;
+      font-family: SourceHanSansCN-Medium, SourceHanSansCN;
+    }
+    ._footer_flex {
+      display: flex;
+      justify-content: space-between;
+      padding: 30px 0 2px 0;
+      ._text {
+        font-size: 18px;
+        font-family: SourceHanSansCN-Regular, SourceHanSansCN;
+        font-weight: 400;
+        color: #000000;
+        cursor: pointer;
+      }
+    }
+  }
+}
