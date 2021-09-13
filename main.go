@@ -160,7 +160,6 @@ func GenerateCode(w http.ResponseWriter, r *http.Request) {
 	//dataMap := dbchain.GetFinalMap(baseUrl, appCode)
 	dataMap := dbchain.GetFinalMapData(baseUrl, accessToken,appCode)
 	//fmt.Println("DATA :",dataMap)
-	time.Now().u
 	h := hmac.New(sha256.New, []byte(strconv.FormatInt(time.Now().UnixNano(), 10)))
 	tmpDirName := base58.Encode(h.Sum(nil))
 
